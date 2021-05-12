@@ -6,6 +6,14 @@ public class UserRegistration {
     public static final String LAST_NAME_REGEX = "^[A-Z]{1}[A-Za-z]{2,}$";
     public static final String EMAIL_REGEX = "^[A-Za-z0-9]+([._+-][A-Za-z0-9]+)*@[A-Za-z0-9]+.[A-Za-z]{2,4}([.][A-Za-z]{2})*$";
     public static final String MOBILE_NO_REGEX = "^[+]{0,1}[0-9]{2,3}[: :][7-9]{1}[0-9]{9}$";
+    public static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\s+$).{8,}$";
+    // (?=.*[0-9])       # a digit must occur at least once
+    // (?=.*[a-z])       # a lower case letter must occur at least once
+    // (?=.*[A-Z])       # an upper case letter must occur at least once
+    // (?=.*[@#$%^&+=])  # a special character must occur at least once
+    // (?=\S+$)          # no whitespace allowed in the entire string
+    // .{8,}             # anything, at least eight places though
+
     public static boolean validateFirstName(String firstName) {
         Pattern pattern = Pattern.compile(FIRST_NAME_REGEX);
         return pattern.matcher(firstName).matches();
@@ -22,9 +30,13 @@ public class UserRegistration {
         Pattern pattern = Pattern.compile(MOBILE_NO_REGEX);
         return pattern.matcher(mobileNo).matches();
     }
+    public static boolean validatePassword(String password) {
+        Pattern pattern = Pattern.compile(PASSWORD_REGEX);
+        return pattern.matcher(password).matches();
+    }
     public static void main(String[] args) {
         Scanner object = new Scanner(System.in);
-        int fName = 0, lName = 0, eMail = 0, mobile = 0;
+        int fName = 0, lName = 0, eMail = 0, mobile = 0, pswd = 0;
         do {
             System.out.println("Enter first name: ");
             String fname = object.nextLine();
@@ -73,5 +85,17 @@ public class UserRegistration {
                 System.out.println("That's an invalid mobile number.");
             }
         } while(mobile == 0);
+        do {
+            System.out.println("Enter password (alphanumeric): ");
+            String password = object.nextLine();
+            if ((validatePassword(password)) == true) {
+                pswd = 1;
+                System.out.println("That's a valid password.");
+            } 
+            else {
+                pswd = 0;
+                System.out.println("That's an invalid password.");
+            }
+        } while(pswd == 0);
     }
 }
